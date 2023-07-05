@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import MyWalletLogo from "../components/MyWalletLogo"
 
@@ -9,8 +10,12 @@ export default function SignUpPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
+  const { authContext } = useContext(AuthContext)
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(authContext && authContext.token) return navigate('/home');
+  }, [ authContext ])
 
   function signUp (ev) {
     ev.preventDefault();

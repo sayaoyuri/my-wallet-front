@@ -1,8 +1,18 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
+import { AuthContext } from "../context/AuthContext"
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
+  const { authContext } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(!authContext || !authContext.token) return navigate('/');
+  }, [ authContext ]);
+
   return (
     <HomeContainer>
       <Header>

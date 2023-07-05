@@ -1,21 +1,32 @@
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 import MyWalletLogo from "../components/MyWalletLogo";
 
 export default function SignInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { authContext, getAuth, setGetAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if(authContext && authContext.token) return navigate('/home');
+  }, [ authContext ])
+  
   function signIn(ev) {
     ev.preventDefault();
 
     const requestBody = { email, password };
 
     axios.post(`${import.meta.env.VITE_API_URL}/login`, requestBody)
-      .then((res) => { console.log(res.data), navigate('/home') })
+      .then((res) => { 
+        console.log(res.data);
+        localStorage.removeItem('auth');
+        localStorage.setItem('auth', JSON.stringify(res.data));
+        setGetAuth(getAuth + 1);
+      })
       .catch(e => alert(e.response.data));
   };
 
