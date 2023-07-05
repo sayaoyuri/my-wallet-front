@@ -28,6 +28,7 @@ export default function SignInPage() {
           required
           onChange={(ev) => setEmail(ev.target.value)} 
           value={email}
+          data-test="email"
         />
         <input 
           placeholder="Senha" type="password" 
@@ -35,8 +36,9 @@ export default function SignInPage() {
           required
           onChange={(ev) => setPassword(ev.target.value)}
           value={password}
+          data-test="password"
         />
-        <button>Entrar</button>
+        <button data-test="sign-in-submit">Entrar</button>
       </form>
 
       <Link to={'/cadastro'}>

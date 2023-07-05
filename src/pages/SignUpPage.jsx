@@ -34,6 +34,7 @@ export default function SignUpPage() {
           required 
           onChange={(ev) => setName(ev.target.value)} 
           value={name}
+          data-test="name"
         />
         <input 
           placeholder="E-mail" 
@@ -41,6 +42,7 @@ export default function SignUpPage() {
           required 
           onChange={(ev) => setEmail(ev.target.value)} 
           value={email}
+          data-test="email"
         />
         <input 
           placeholder="Senha" 
@@ -50,6 +52,7 @@ export default function SignUpPage() {
           required 
           onChange={(ev) => setPassword(ev.target.value)} 
           value={password}
+          data-test="password"
           />
         <input 
           placeholder="Confirme a senha"
@@ -58,8 +61,9 @@ export default function SignUpPage() {
           required
           onChange={(ev) => setConfirmPassword(ev.target.value)}
           value={confirmPassword}
+          data-test="conf-password"
         />
-        <button>Cadastrar</button>
+        <button data-test="sign-up-submit">Cadastrar</button>
       </form>
 
       <Link to={'/'}>
