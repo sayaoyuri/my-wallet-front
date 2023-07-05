@@ -6,7 +6,7 @@ import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
-  const { authContext } = useContext(AuthContext);
+  const { authContext, getAuth, setGetAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,7 +17,11 @@ export default function HomePage() {
     <HomeContainer>
       <Header>
         <h1>Olá, Fulano</h1>
-        <BiExit />
+        <BiExit onClick={() => {
+            localStorage.removeItem('auth');
+            setGetAuth(getAuth + 1);
+        }}>
+        </BiExit>
       </Header>
 
       <TransactionsContainer>
