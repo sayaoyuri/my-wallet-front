@@ -30,6 +30,7 @@ export default function SignUpPage() {
         <input 
           placeholder="Nome" 
           type="text" 
+          minLength={3}
           required 
           onChange={(ev) => setName(ev.target.value)} 
           value={name}
@@ -44,7 +45,7 @@ export default function SignUpPage() {
         <input 
           placeholder="Senha" 
           type="password" 
-          autocomplete="new-password" 
+          autoComplete="new-password" 
           minLength={3}
           required 
           onChange={(ev) => setPassword(ev.target.value)} 
@@ -66,7 +67,7 @@ export default function SignUpPage() {
       </Link>
     </SingUpContainer>
   )
-}
+};
 
 const SingUpContainer = styled.section`
   height: 100vh;

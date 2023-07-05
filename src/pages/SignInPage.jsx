@@ -1,16 +1,23 @@
-import styled from "styled-components"
-import { Link } from "react-router-dom"
-import MyWalletLogo from "../components/MyWalletLogo"
+import styled from "styled-components";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { useState } from "react";
+import MyWalletLogo from "../components/MyWalletLogo";
 
 export default function SignInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  console.log(email, password);
+  const navigate = useNavigate();
 
-  function signIn() {
-    
-  }
+  function signIn(ev) {
+    ev.preventDefault();
+
+    const requestBody = { email, password };
+
+    axios.post(`${import.meta.env.VITE_API_URL}/login`, requestBody)
+      .then((res) => { console.log(res.data), navigate('/home') })
+      .catch(e => alert(e.response.data));
+  };
 
   return (
     <SingInContainer>
@@ -24,7 +31,7 @@ export default function SignInPage() {
         />
         <input 
           placeholder="Senha" type="password" 
-          autocomplete="new-password" 
+          minLength={3}
           required
           onChange={(ev) => setPassword(ev.target.value)}
           value={password}
@@ -37,7 +44,7 @@ export default function SignInPage() {
       </Link>
     </SingInContainer>
   )
-}
+};
 
 const SingInContainer = styled.section`
   height: 100vh;
