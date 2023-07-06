@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from "react"
 export const AuthContext = createContext();
 
 export function AuthContextProvider ({ children })  {
-  const [authContext, setAuthContext] = useState(undefined);
+  const [authContext, setAuthContext] = useState(JSON.parse(localStorage.getItem('auth')));
   const [getAuth, setGetAuth] = useState(0);
   console.log(authContext);
   

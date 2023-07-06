@@ -17,10 +17,13 @@ export default function HomePage() {
     <HomeContainer>
       <Header>
         <h1>Olá, Fulano</h1>
-        <BiExit onClick={() => {
+        <BiExit
+          onClick={() => {
             localStorage.removeItem('auth');
             setGetAuth(getAuth + 1);
-        }}>
+          }}
+          data-test="logout"
+        >
         </BiExit>
       </Header>
 
@@ -51,11 +54,11 @@ export default function HomePage() {
 
 
       <ButtonsContainer>
-        <button>
+        <button onClick={() => navigate('/nova-transacao/entrada')}>
           <AiOutlinePlusCircle />
           <p>Nova <br /> entrada</p>
         </button>
-        <button>
+        <button onClick={() => navigate('/nova-transacao/saida')}>
           <AiOutlineMinusCircle />
           <p>Nova <br />saída</p>
         </button>
