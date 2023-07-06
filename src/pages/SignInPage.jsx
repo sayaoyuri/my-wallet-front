@@ -25,8 +25,8 @@ export default function SignInPage() {
         console.log(res.data);
         localStorage.removeItem('auth');
         localStorage.setItem('auth', JSON.stringify(res.data));
-        navigate('/home');
         setGetAuth(getAuth + 1);
+        setTimeout(() => navigate('/home'), 200);
       })
       .catch(e => alert(e.response.data));
   };
