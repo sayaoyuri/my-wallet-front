@@ -16,7 +16,7 @@ export default function HomePage() {
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, Fulano</h1>
+        <h1 data-test="user-name">{`Olá, ${authContext.name}`}</h1>
         <BiExit
           onClick={() => {
             localStorage.removeItem('auth');
@@ -54,11 +54,11 @@ export default function HomePage() {
 
 
       <ButtonsContainer>
-        <button onClick={() => navigate('/nova-transacao/entrada')}>
+        <button onClick={() => navigate('/nova-transacao/entrada')} data-test="new-income">
           <AiOutlinePlusCircle />
           <p>Nova <br /> entrada</p>
         </button>
-        <button onClick={() => navigate('/nova-transacao/saida')}>
+        <button onClick={() => navigate('/nova-transacao/saida')} data-test="new-expense">
           <AiOutlineMinusCircle />
           <p>Nova <br />saída</p>
         </button>
