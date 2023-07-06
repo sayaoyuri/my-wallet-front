@@ -16,11 +16,12 @@ export default function HomePage() {
   return (
     <HomeContainer>
       <Header>
-        <h1 data-test="name">{`Olá, ${authContext.name}`}</h1>
+        <h1 data-test="user-name">{`Olá, ${authContext && authContext.name}`}</h1>
         <BiExit
           onClick={() => {
             localStorage.removeItem('auth');
             setGetAuth(getAuth + 1);
+            // navigate('/');
           }}
           data-test="logout"
         >

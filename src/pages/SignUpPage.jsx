@@ -13,9 +13,9 @@ export default function SignUpPage() {
   const { authContext } = useContext(AuthContext)
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if(authContext && authContext.token) return navigate('/home');
-  }, [ authContext ])
+  // useEffect(() => {
+  //   if(authContext && authContext.token) return navigate('/home');
+  // }, [ authContext ])
 
   function signUp (ev) {
     ev.preventDefault();

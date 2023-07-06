@@ -11,9 +11,9 @@ export default function SignInPage() {
   const { authContext, getAuth, setGetAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if(authContext && authContext.token) return navigate('/home');
-  }, [ authContext ])
+  // useEffect(() => {
+  //   if(authContext && authContext.token) return navigate('/home');
+  // }, [ authContext ])
   
   function signIn(ev) {
     ev.preventDefault();
