@@ -2,15 +2,32 @@ import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
 import { AuthContext } from "../context/AuthContext"
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function HomePage() {
   const { authContext, getAuth, setGetAuth } = useContext(AuthContext);
+  const [transactions, setTransactions] = useState([])
+  const [balance, setBalance] = useState(0.00)
   const navigate = useNavigate();
 
   useEffect(() => {
     if(!authContext || !authContext.token) return navigate('/');
+
+    const config = { headers: { token: authContext.token } };
+    axios.get(`${import.meta.env.VITE_API_URL}/transactions`, config)
+      .then(res => {
+        setTransactions(res.data);
+        
+        const newBalance = res.data.reduce((balance, current) => {
+          if(current.type === 'income') return balance + Number(current.amount);
+          return balance + (Number(current.amount) * -1);
+        }, 0);
+        
+        setBalance((newBalance).toFixed(2));
+      })
+      .catch(e => alert(e.response.data));
   }, [ authContext ]);
 
   return (
@@ -30,29 +47,22 @@ export default function HomePage() {
 
       <TransactionsContainer>
         <ul>
-          <ListItemContainer>
-            <div>
-              <span>30/11</span>
-              <strong>Almoço mãe</strong>
-            </div>
-            <Value color={"negativo"}>120,00</Value>
-          </ListItemContainer>
-
-          <ListItemContainer>
-            <div>
-              <span>15/11</span>
-              <strong>Salário</strong>
-            </div>
-            <Value color={"positivo"}>3000,00</Value>
-          </ListItemContainer>
+          {transactions.map(t => (
+            <ListItemContainer key={t._id}>
+              <div>
+                <span>{t.date}</span>
+                <strong data-test="registry-name">{t.description}</strong>
+              </div>
+              <Value color={t.type === 'income' ? true : false} data-test="registry-amount">{t.amount}</Value>
+            </ListItemContainer>
+          ))}
         </ul>
 
         <article>
           <strong>Saldo</strong>
-          <Value color={"positivo"}>2880,00</Value>
+          <Value color={balance > 0 ? true : false} data-test="total-amount">{balance}</Value>
         </article>
       </TransactionsContainer>
-
 
       <ButtonsContainer>
         <button onClick={() => navigate('/nova-transacao/entrada')} data-test="new-income">
@@ -123,7 +133,7 @@ const ButtonsContainer = styled.section`
 const Value = styled.div`
   font-size: 16px;
   text-align: right;
-  color: ${(props) => (props.color === "positivo" ? "green" : "red")};
+  color: ${(props) => (props.color === true ? "green" : "red")};
 `
 const ListItemContainer = styled.li`
   display: flex;
