@@ -19,7 +19,7 @@ export default function HomePage() {
     axios.get(`${import.meta.env.VITE_API_URL}/transactions`, config)
       .then(res => {
         setTransactions(res.data);
-        
+
         const newBalance = res.data.reduce((balance, current) => {
           if(current.type === 'income') return balance + Number(current.amount);
           return balance + (Number(current.amount) * -1);
@@ -53,14 +53,14 @@ export default function HomePage() {
                 <span>{t.date}</span>
                 <strong data-test="registry-name">{t.description}</strong>
               </div>
-              <Value color={t.type === 'income' ? true : false} data-test="registry-amount">{t.amount}</Value>
+              <Value color={t.type === 'income' ? true : false} data-test="registry-amount">{String(t.amount).replace('.', ',')}</Value>
             </ListItemContainer>
           ))}
         </ul>
 
         <article>
           <strong>Saldo</strong>
-          <Value color={balance > 0 ? true : false} data-test="total-amount">{balance}</Value>
+          <Value color={balance > 0 ? true : false} data-test="total-amount">{String(balance).replace('.', ',')}</Value>
         </article>
       </TransactionsContainer>
 
