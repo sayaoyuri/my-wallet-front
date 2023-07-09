@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
+import { FiX } from "react-icons/fi";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
 import { AuthContext } from "../context/AuthContext"
 import { useContext, useEffect, useState } from "react";
@@ -10,6 +11,7 @@ export default function HomePage() {
   const { authContext, getAuth, setGetAuth } = useContext(AuthContext);
   const [transactions, setTransactions] = useState([])
   const [balance, setBalance] = useState(0.00)
+  const [getContent, setGetContent] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,7 +30,18 @@ export default function HomePage() {
         setBalance((newBalance).toFixed(2));
       })
       .catch(e => alert(e.response.data));
-  }, [ authContext ]);
+  }, [ authContext, getContent ]);
+
+  function deleteTransaction (transaction) {
+    const del = confirm(`Deseja excluir o registro: ${transaction.description}, R$ ${transaction.amount}`);
+    if(del) {
+      const config = { headers: { token: authContext.token } };
+
+      axios.delete(`${import.meta.env.VITE_API_URL}/transactions/${transaction._id}`, config)
+        .then(res => setGetContent(getContent + 1))
+        .catch(e => alert(res.response.data));
+    };
+  };
 
   return (
     <HomeContainer>
@@ -38,7 +51,6 @@ export default function HomePage() {
           onClick={() => {
             localStorage.removeItem('auth');
             setGetAuth(getAuth + 1);
-            // navigate('/');
           }}
           data-test="logout"
         >
@@ -53,7 +65,10 @@ export default function HomePage() {
                 <span>{t.date}</span>
                 <strong data-test="registry-name">{t.description}</strong>
               </div>
-              <Value color={t.type === 'income' ? true : false} data-test="registry-amount">{String(t.amount).replace('.', ',')}</Value>
+              <div style={{display: 'flex', gap: '10px'}}>
+                <Value color={t.type === 'income' ? true : false} data-test="registry-amount">{String(t.amount).replace('.', ',')}</Value>
+                <FiX color="#C6C6C6" onClick={() => deleteTransaction(t)} data-test="registry-delete"/>
+              </div>
             </ListItemContainer>
           ))}
         </ul>
@@ -94,6 +109,7 @@ const Header = styled.header`
   color: white;
 `
 const TransactionsContainer = styled.article`
+  overflow-y: scroll;
   flex-grow: 1;
   background-color: #fff;
   color: #000;
